@@ -1,0 +1,85 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright 2011 Raymond Jelierse <r.jelierse@sparse.nl>
+# Generated from files:
+#  events.module: n/a
+#  events.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Drupal Evenementen module 1.0\n"
+"POT-Creation-Date: 2011-10-31 08:24+0100\n"
+"PO-Revision-Date: 2011-10-31 09:00+0100\n"
+"Last-Translator: Raymond Jelierse <r.jelierse@sparse.nl>\n"
+"Language-Team: nl <nl@drupal.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: events.module:27;190;217
+msgid "Event"
+msgstr "Evenement"
+
+#: events.module:28
+msgid "Node for a future event."
+msgstr "Pagina voor een evenement. Alle evenementen verschijnen in de agena."
+
+#: events.module:30
+msgid "Event name"
+msgstr "Evenement naam"
+
+#: events.module:31
+msgid "Event description"
+msgstr "Extra informatie"
+
+#: events.module:52
+msgid "Event date"
+msgstr "Datum"
+
+#: events.module:57
+msgid "Event location"
+msgstr "Locatie"
+
+#: events.module:114;189;216
+msgid "Date"
+msgstr "Datum"
+
+#: events.module:120;218
+msgid "Location"
+msgstr "Locatie"
+
+#: events.module:159;175
+msgid "Upcoming events"
+msgstr "Agenda"
+
+#: events.module:176
+msgid "No events in the next 7 days."
+msgstr "Geen evenementen de komende 7 dagen."
+
+#: events.module:211
+msgid "Could not load the list of events"
+msgstr "Kon de agenda niet laden."
+
+#: events.module:231
+msgid "There are no events in the future."
+msgstr "Er zijn geen toekomstige evenementen."
+
+#: events.module:12
+msgid "Agenda"
+msgstr "Agenda"
+
+#: events.module:13
+msgid "List of the coming events."
+msgstr "Lijst met komende evenementen."
+
+#: events.info:0
+msgid "Events"
+msgstr "Evenementen"
+
+#: events.info:0
+msgid "Simple event management module."
+msgstr "Eenvoudige module voor het beheren van evenementen."
+

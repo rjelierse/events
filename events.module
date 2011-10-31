@@ -1,0 +1,236 @@
+<?php
+/**
+ * Events module: Main file.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function events_menu() {
+    return array(
+        'events' => array(
+            'title' => 'Agenda',
+            'description' => 'List of the coming events.',
+            'access arguments' => array('access content'),
+            'page callback' => 'events_list',
+            'type' => MENU_CALLBACK
+        )
+    );
+}
+
+/**
+ * Implementation of hook_node_info().
+ */
+function events_node_info() {
+    return array(
+        'event' => array(
+            'name' => t('Event'),
+            'description' => t('Node for a future event.'),
+            'module' => 'events',
+            'title_label' => t('Event name'),
+            'body_label' => t('Event description')
+        )
+    );
+}
+
+/**
+ * Implementation of hook_form().
+ */
+function events_form(&$node, $form_state) {
+    $type = node_get_types('type', $node);
+    
+    $form = array();
+
+    $form['title'] = array(
+        '#type' => 'textfield',
+        '#title' => check_plain($type->title_label),
+        '#default_value' => $node->title,
+        '#required' => true
+    );
+    $form['event_date'] = array(
+        '#type' => 'datetime',
+        '#title' => t('Event date'),
+        '#required' => true
+    );
+    $form['event_location'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Event location'),
+        '#default_value' => $node->event_location,
+        '#required' => true
+    );
+    $form['body'] = array(
+        '#type' => 'textarea',
+        '#rows' => 5,
+        '#title' => check_plain($type->body_label),
+        '#default_value' => $node->body,
+        '#required' => false
+    );
+
+    if (!empty($node->event_date)) {
+        $form['event_date']['#default_value'] = array(
+            'hour' => format_date($node->event_date, 'custom', 'G'),
+            'minute' => format_date($node->event_date, 'custom', 'i'),
+            'day' => format_date($node->event_date, 'custom', 'j'),
+            'month' => format_date($node->event_date, 'custom', 'n'),
+            'year' => format_date($node->event_date, 'custom', 'Y')
+        );
+    }
+
+    return $form;
+}
+
+/**
+ * Load the event date for a given node.
+ *
+ * @param $node The node to load.
+ * @return object The extra data connected to event type nodes.
+ *
+ * @seealso hook_load()
+ */
+function events_load($node) {
+    $data = db_query('SELECT event_date, event_location FROM {node_events} WHERE nid = %d', $node->nid);
+    if ($data === false) {
+        drupal_set_message('Could not load event data.');
+        return false;
+    }
+
+    $event = db_fetch_object($data);
+    if ($event === false) {
+        drupal_set_message('No event data connected to the given node.');
+        return false;
+    }
+
+    return $event;
+}
+
+/**
+ * Implementation of hook_view().
+ */
+function events_view($node, $teaser = false, $page = false) {
+    $node = node_prepare($node, $teaser);
+
+    $node->content['event_date'] = array(
+        '#type' => 'item',
+        '#title' => t('Date'),
+        '#value' => format_date($node->event_date, 'large'),
+        '#weight' => -2
+    );
+    $node->content['event_location'] = array(
+        '#type' => 'item',
+        '#title' => t('Location'),
+        '#value' => $node->event_location,
+        '#weight' => -1
+    );
+
+    return $node;
+}
+
+/**
+ * Add event data to the database for a newly created node.
+ *
+ * @param object $node The node to update.
+ * @return void Nothing.
+ *
+ * @seealso hook_insert()
+ */
+function events_insert($node) {
+    db_query("INSERT INTO {node_events} (nid, event_date, event_location) VALUES (%d, %d, '%s')", $node->nid, datetime_to_unix_timestamp($node->event_date), $node->event_location);
+}
+
+/**
+ * Update the event data for a given node.
+ *
+ * @param object $node The node to update.
+ * @return void Nothing.
+ *
+ * @seealso hook_update()
+ */
+function events_update($node) {
+    db_query("UPDATE {node_events} SET event_date = %d, event_location = '%s' WHERE nid = %d", datetime_to_unix_timestamp($node->event_date), $node->event_location, $node->nid);
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function events_block($op, $delta = 0, $data = null) {
+    if ($op == 'list') {
+        return array(
+            'upcoming' => array(
+                'info' => t('Upcoming events'),
+                'cache' => BLOCK_CACHE_GLOBAL
+            )
+        );
+    }
+
+    $function = implode('_', array('events', 'block', $delta, $op));
+    if (function_exists($function)) {
+        return $function();
+    }
+
+    return false;
+}
+
+function events_block_upcoming_view() {
+    $block = array(
+        'subject' => t('Upcoming events'),
+        'content' => t('No events in the next 7 days.')
+    );
+    
+    $start = mktime(0, 0, 0);
+    $end = strtotime('+7 days', $start);
+
+    $data = db_query('SELECT nid FROM {node_events} WHERE event_date BETWEEN %d AND %d ORDER BY event_date ASC', $start, $end);
+    if ($data === false) {
+        drupal_set_message('query failed.');
+        return $block;
+    }
+
+    $header = array(
+        t('Date'),
+        t('Event')
+    );
+    $rows = array();
+    while(($node = db_fetch_array($data)) !== false) {
+        $node = node_load($node);
+        $rows[] = array(
+            array('data' => format_date($node->event_date, 'small'), 'class' => 'date'),
+            l($node->title, $node->path)
+        );
+    }
+    if (!empty($rows)) {
+        $block['content'] = theme('table', $header, $rows);
+    }
+
+    return $block;
+}
+
+function events_list() {
+    $start = mktime(0, 0, 0);
+    $data = db_query('SELECT nid FROM {node_events} WHERE event_date > %d ORDER BY event_date ASC', $start);
+    if ($data === false) {
+        drupal_set_message(t('Could not load the list of events'), 'error');
+        return '';
+    }
+
+    $header = array(
+        t('Date'),
+        t('Event'),
+        t('Location')
+    );
+    $rows = array();
+    while (($node = db_fetch_array($data)) !== false) {
+        $node = node_load($node);
+        $rows[] = array(
+            array('data' => format_date($node->event_date, 'medium'), 'class' => 'date'),
+            l($node->title, $node->path),
+            check_plain($node->event_location)
+        );
+    }
+
+    if (empty($rows)) {
+        drupal_set_message(t('There are no events in the future.'));
+        return '';
+    }
+
+    return theme('table', $header, $rows);
+}

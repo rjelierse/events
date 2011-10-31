@@ -1,0 +1,53 @@
+<?php
+/**
+ * Events module: installation routines.
+ */
+ 
+function events_install() {
+    drupal_install_schema('events');
+}
+
+function events_uninstall() {
+    drupal_uninstall_schema('events');
+}
+
+function events_schema() {
+    return array(
+        'node_events' => array(
+            'description' => 'Additional fields for node type: event.',
+            'fields' => array(
+                'nid' => array(
+                    'description' => '{node}.nid',
+                    'type' => 'int',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default' => 0
+                ),
+                'vid' => array(
+                    'description' => '{node}.vid',
+                    'type' => 'int',
+                    'unsigned' => true,
+                    'not null' => true,
+                    'default' => 0
+                ),
+                'event_location' => array(
+                    'description' => 'Location of the event.',
+                    'type' => 'varchar',
+                    'length' => 128,
+                    'not null' => true
+                ),
+                'event_date' => array(
+                    'description' => 'The Unix timestamp for when the event starts.',
+                    'type' => 'int',
+                    'not null' => true,
+                    'default' => 0
+                ),
+            ),
+            'primary key' => array('nid', 'vid')
+        )
+    );
+}
+
+function events_update_6000() {
+    drupal_install_schema('events');
+}
