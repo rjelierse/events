@@ -221,7 +221,7 @@ function events_list() {
     while (($node = db_fetch_array($data)) !== false) {
         $node = node_load($node);
         $rows[] = array(
-            array('data' => format_date($node->event_date, 'medium'), 'class' => 'date'),
+            array('data' => format_date($node->event_date, 'small'), 'class' => 'date'),
             l($node->title, $node->path),
             check_plain($node->event_location)
         );
