@@ -1,6 +1,6 @@
 # $Id$
 #
-# LANGUAGE translation of Drupal (general)
+# Dutch translation of Drupal (general)
 # Copyright 2011 Raymond Jelierse <r.jelierse@sparse.nl>
 # Generated from files:
 #  events.module: n/a
