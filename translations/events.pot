@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2011-10-31 08:24+0100\n"
+"POT-Creation-Date: 2011-11-04 20:01+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: events.module:27;190;217
+#: events.module:27;215;242
 msgid "Event"
 msgstr ""
 
@@ -35,36 +35,56 @@ msgstr ""
 msgid "Event description"
 msgstr ""
 
-#: events.module:52
+#: events.module:77
 msgid "Event date"
 msgstr ""
 
-#: events.module:57
+#: events.module:82
 msgid "Event location"
 msgstr ""
 
-#: events.module:114;189;216
+#: events.module:139;214;241
 msgid "Date"
 msgstr ""
 
-#: events.module:120;218
+#: events.module:145;243
 msgid "Location"
 msgstr ""
 
-#: events.module:159;175
+#: events.module:184;200
 msgid "Upcoming events"
 msgstr ""
 
-#: events.module:176
+#: events.module:201
 msgid "No events in the next 7 days."
 msgstr ""
 
-#: events.module:211
+#: events.module:236
 msgid "Could not load the list of events"
 msgstr ""
 
-#: events.module:231
+#: events.module:256
 msgid "There are no events in the future."
+msgstr ""
+
+#: events.module:53
+msgid "create event"
+msgstr ""
+
+#: events.module:54
+msgid "edit any event"
+msgstr ""
+
+#: events.module:55
+msgid "edit own events"
+msgstr ""
+
+#: events.module:56
+msgid "delete any event"
+msgstr ""
+
+#: events.module:57
+msgid "delete own event"
 msgstr ""
 
 #: events.module:12

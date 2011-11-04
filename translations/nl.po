@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Drupal Evenementen module 1.0\n"
-"POT-Creation-Date: 2011-10-31 08:24+0100\n"
-"PO-Revision-Date: 2011-10-31 09:00+0100\n"
+"POT-Creation-Date: 2011-11-04 20:01+0100\n"
+"PO-Revision-Date: 2011-11-04 20:10+0100\n"
 "Last-Translator: Raymond Jelierse <r.jelierse@sparse.nl>\n"
 "Language-Team: nl <nl@drupal.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,6 +66,26 @@ msgstr "Kon de agenda niet laden."
 #: events.module:231
 msgid "There are no events in the future."
 msgstr "Er zijn geen toekomstige evenementen."
+
+#: events.module:53
+msgid "create event"
+msgstr "cre�er evenement"
+
+#: events.module:54
+msgid "edit any event"
+msgstr "bewerk elk evenement"
+
+#: events.module:55
+msgid "edit own events"
+msgstr "bewerk eigen evenementen"
+
+#: events.module:56
+msgid "delete any event"
+msgstr "verwijder elk evenement"
+
+#: events.module:57
+msgid "delete own event"
+msgstr "verwijder eigen evenementen"
 
 #: events.module:12
 msgid "Agenda"

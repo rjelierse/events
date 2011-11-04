@@ -34,6 +34,31 @@ function events_node_info() {
 }
 
 /**
+ * Implementation of hook_access().
+ */
+function events_access($op, $node, $account) {
+    if ($op == 'create') {
+        return user_access('create event', $account);
+    }
+    if ($op == 'update') {
+        return (user_access('edit own events', $account) && ($account->uid == $node->uid)) || user_access('edit any event', $account);
+    }
+    if ($op == 'delete') {
+        return (user_access('delete own events', $account) && ($account->uid == $node->uid)) || user_access('delete any event', $account);
+    }
+}
+
+function events_perm() {
+    return array(
+        'create event',
+        'edit any event',
+        'edit own events',
+        'delete any event',
+        'delete own event'
+    );
+}
+
+/**
  * Implementation of hook_form().
  */
 function events_form(&$node, $form_state) {
