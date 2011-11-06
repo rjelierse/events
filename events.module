@@ -14,6 +14,11 @@ function events_menu() {
             'access arguments' => array('access content'),
             'page callback' => 'events_list',
             'type' => MENU_CALLBACK
+        ),
+        'event/location/autocomplete' => array(
+            'access arguments' => array('access content'),
+            'page callback' => 'events_location_autocomplete',
+            'type' => MENU_CALLBACK
         )
     );
 }
@@ -81,6 +86,7 @@ function events_form(&$node, $form_state) {
         '#type' => 'textfield',
         '#title' => t('Event location'),
         '#default_value' => $node->event_location,
+        '#autocomplete_path' => 'event/location/autocomplete',
         '#required' => true
     );
     $form['body'] = array(
@@ -258,4 +264,15 @@ function events_list() {
     }
 
     return theme('table', $header, $rows);
+}
+
+function events_location_autocomplete($search = '') {
+    $result = db_query_range("SELECT event_location FROM {node_events} WHERE LOWER(event_location) LIKE LOWER('%%%s%%') GROUP BY LOWER(event_location) ORDER BY event_location", $search, 0, 15);
+
+    $locations = array();
+    while (($location = db_fetch_array($result)) !== false) {
+        $locations[$location['event_location']] = $location['event_location'];
+    }
+
+    return drupal_json($locations);
 }
